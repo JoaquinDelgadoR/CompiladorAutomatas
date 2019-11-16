@@ -22,6 +22,7 @@ public class Lexer
 		{
 			entrada.append(x);
 		}
+		
 		// Por algún motivo necesito eliminar estas cosas que no existen
 		caracteres_vacios.add('\r');
 		caracteres_vacios.add('\n');
@@ -58,7 +59,7 @@ public class Lexer
 
 		if (entrada.length() > 0)
 		{
-			mensaje_error = "Unexpected symbol: '" + entrada.charAt(0) + "'";
+			mensaje_error = "Símbolo no esperado: '" + entrada.charAt(0) + "'";
 		}
 	}
 

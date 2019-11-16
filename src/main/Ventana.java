@@ -38,8 +38,8 @@ public class Ventana extends JFrame
 
 		barra_tareas = new JToolBar();
 		btn_iniciar = new JButton("Iniciar análisis");
-		btn_iniciar.addActionListener(e -> resultado_analisis()); // Esto de acá es una función lambda, la uso para
-																	// directamente llamar al método del Lexer
+		btn_iniciar.addActionListener(e -> resultado_analisis());
+		
 		barra_tareas.add(btn_iniciar);
 		this.add(barra_tareas, BorderLayout.NORTH);
 
