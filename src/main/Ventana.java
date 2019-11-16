@@ -49,8 +49,9 @@ public class Ventana extends JFrame
 	{
 		lexer = new Lexer();
 		jta_consola.setText("");
-		
+
 		lexer.analizar(jta_texto.getText().split("\n"));
+
 		while (!lexer.concluido())
 		{
 			jta_consola.append(lexer.lexema_actual() + "\t" + lexer.token_actual() + "\n");

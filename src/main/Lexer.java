@@ -18,11 +18,6 @@ public class Lexer
 
 	public void analizar(String codigo[])
 	{
-		/*
-		 * try (Stream<String> aux = Stream.of(codigo)) { aux.forEach(input::append); }
-		 * catch (Exception e) { System.out.println("ay me morí");
-		 * System.out.println(e.getMessage()); }
-		 */
 		for (String x : codigo)
 		{
 			entrada.append(x);
@@ -86,13 +81,13 @@ public class Lexer
 	{
 		for (Gramatica t : Gramatica.values())
 		{
-			int end = t.final_coincidencias(entrada.toString());
+			int fin = t.final_coincidencias(entrada.toString());
 
-			if (end != -1)
+			if (fin != -1)
 			{
 				token = t;
-				lexema = entrada.substring(0, end);
-				entrada.delete(0, end);
+				lexema = entrada.substring(0, fin);
+				entrada.delete(0, fin);
 				return true;
 			}
 		}
