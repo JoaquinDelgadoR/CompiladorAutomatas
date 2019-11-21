@@ -13,9 +13,10 @@ public enum Gramatica
 	If("(if)"),
 	Especificador("(boolean|int)"),
 	Modificador("(public|private)"),
-	Entero_literal("\\d+"), 
+	Entero_literal("[1-9][1-9]?$|^99 "), 
 	Booleano_literal("(true|false)"),
-	Identificador("\\w+"),
+	//Identificador("\\w+"),
+	Identificador("[a-z]+"),
 	Operadores_aritmeticos("(\\+|-|/|\\*)");
 
 	private final Pattern patron;

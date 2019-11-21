@@ -59,7 +59,8 @@ public class Lexer
 
 		if (entrada.length() > 0)
 		{
-			mensaje_error = "Símbolo no esperado: '" + entrada.charAt(0) + "'";
+			mensaje_error = "Unexpected symbol: '" + entrada.charAt(0) + "'";
+			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'";
 		}
 	}
 

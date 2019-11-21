@@ -37,8 +37,10 @@ public class Ventana extends JFrame
 		this.add(jta_consola, BorderLayout.EAST);
 
 		barra_tareas = new JToolBar();
-		btn_iniciar = new JButton("Iniciar an·lisis");
-		btn_iniciar.addActionListener(e -> resultado_analisis());
+		btn_iniciar = new JButton("Iniciar an√°lisis");
+		btn_iniciar.addActionListener(e -> resultado_analisis()); // Esto de acÔøΩ es una funciÔøΩn lambda, la uso para
+		// directamente llamar al mÔøΩtodo del Lexer
+        btn_iniciar.addActionListener(e -> resultado_analisis());
 		
 		barra_tareas.add(btn_iniciar);
 		this.add(barra_tareas, BorderLayout.NORTH);
@@ -60,7 +62,7 @@ public class Ventana extends JFrame
 
 		if (lexer.analisis_exitoso())
 		{
-			jta_consola.append("An·lisis finalizado con Èxito.");
+			jta_consola.append("An√°lisis finalizado con √©xito.");
 		} else
 		{
 			jta_consola.append(lexer.mensaje_error());
