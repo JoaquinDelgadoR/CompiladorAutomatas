@@ -60,23 +60,17 @@ public class Lexer
 
 		if (entrada.length() > 0)
 		{
-			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0));
-			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0));
+			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0), 0);
+			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0), 0);
 		}
 	}
 	
-	private int obtenerIndice(char c)
+	private int obtenerIndice(char c, int i)
 	{
-		String x;
-		for(int i = 0; i < codigo.length ; i++)
-		{
-			x = codigo[i];
-			if(x.contains("" + c))
-			{
-				return(i + 1);
-			}
-		}
-		return 0;
+		if(codigo[i].contains("" + c))
+			return (i + 1);
+		else
+			return (obtenerIndice(c, i + 1));
 	}
 	private void ignorar_espacios()
 	{
