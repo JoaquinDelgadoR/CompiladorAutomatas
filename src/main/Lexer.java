@@ -11,19 +11,20 @@ public class Lexer
 	private boolean concluido = false;
 	private String mensaje_error = "";
 	private Set<Character> caracteres_vacios = new HashSet<Character>();
-
+	private String codigo[];
 	public Lexer()
 	{
 	}
 
 	public void analizar(String codigo[])
 	{
+		this.codigo = codigo;
 		for (String x : codigo)
 		{
 			entrada.append(x);
 		}
 		
-		// Por alg�n motivo necesito eliminar estas cosas que no existen
+		// Por algún motivo necesito eliminar estas cosas que no existen
 		caracteres_vacios.add('\r');
 		caracteres_vacios.add('\n');
 		caracteres_vacios.add((char) 8);
@@ -59,11 +60,24 @@ public class Lexer
 
 		if (entrada.length() > 0)
 		{
-			mensaje_error = "Unexpected symbol: '" + entrada.charAt(0) + "'";
-			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'";
+			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0));
+			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0));
 		}
 	}
-
+	
+	private int obtenerIndice(char c)
+	{
+		String x;
+		for(int i = 0; i < codigo.length ; i++)
+		{
+			x = codigo[i];
+			if(x.contains("" + c))
+			{
+				return(i + 1);
+			}
+		}
+		return 0;
+	}
 	private void ignorar_espacios()
 	{
 		int caracteres_a_borrar = 0;
