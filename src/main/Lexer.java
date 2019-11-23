@@ -12,6 +12,7 @@ public class Lexer
 	private String mensaje_error = "";
 	private Set<Character> caracteres_vacios = new HashSet<Character>();
 	private String codigo[];
+
 	public Lexer()
 	{
 	}
@@ -23,7 +24,7 @@ public class Lexer
 		{
 			entrada.append(x);
 		}
-		
+
 		// Por algún motivo necesito eliminar estas cosas que no existen
 		caracteres_vacios.add('\r');
 		caracteres_vacios.add('\n');
@@ -61,17 +62,17 @@ public class Lexer
 		if (entrada.length() > 0)
 		{
 			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0), 0);
-			mensaje_error = "Simbolo no esperado: '" + entrada.charAt(0) + "'" + " en la línea " + obtenerIndice(entrada.charAt(0), 0);
 		}
 	}
-	
+
 	private int obtenerIndice(char c, int i)
 	{
-		if(codigo[i].contains("" + c))
+		if (codigo[i].contains("" + c))
 			return (i + 1);
 		else
 			return (obtenerIndice(c, i + 1));
 	}
+
 	private void ignorar_espacios()
 	{
 		int caracteres_a_borrar = 0;
