@@ -9,16 +9,16 @@ public enum Gramatica
 	Declaracion_clase("(class)"), 
 	Simbolos_especiales("(\\(|\\)|\\{|\\}|\\[|\\]|;)"),
 	Simbolos_de_evaluacion("(<=|>=|<|>|==|!=)"),
-	Operadores_aritmeticos("(\\+|-|/|\\*)"),
 	Asignacion("(=)"),
 	While("(while)"),
 	If("(if)"),
 	Especificador("(boolean|int)"),
 	Modificador("(public|private)"),
-	Entero_literal("([1-9][1-9]?)|^99 "), 
+	Entero_literal("[1-9][0-9]"), 
 	Booleano_literal("(true|false)"),
 	//Identificador("\\w+"),
-	Identificador("([a-z]+([1-9])*)");
+	Identificador("[a-z]+[1-9]*"),
+	Operadores_aritmeticos("(\\+|-|/|\\*)");
 
 	private final Pattern patron;
 
