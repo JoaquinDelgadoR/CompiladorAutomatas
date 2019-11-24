@@ -12,11 +12,11 @@ public enum Gramatica
 	While("(while)"),
 	If("(if)"),
 	Especificador("(boolean|int)"),
-	Modificador("(public|private)"),
-	Identificador("[a-z]+[1-9]*"),
-	Entero_literal("[1-9]?[0-9]"), 
 	Booleano_literal("(true|false)"),
-	Operadores_aritmeticos("(\\+|-|/|\\*)");
+	Modificador("(public|private)"),
+	Operadores_aritmeticos("(\\+|-|/|\\*)"),
+	Identificador("[a-z]+[1-9]*"),
+	Entero_literal("[1-9]?[0-9]"); 
 
 	private final Pattern patron;
 
