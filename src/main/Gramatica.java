@@ -5,7 +5,6 @@ import java.util.regex.Pattern;
 
 public enum Gramatica
 {
-	//guardar identificadores
 	Declaracion_clase("(class)"), 
 	Simbolos_especiales("(\\(|\\)|\\{|\\}|\\[|\\]|;)"),
 	Simbolos_de_evaluacion("(<=|>=|<|>|==|!=)"),
@@ -14,10 +13,9 @@ public enum Gramatica
 	If("(if)"),
 	Especificador("(boolean|int)"),
 	Modificador("(public|private)"),
-	Entero_literal("[1-9][0-9]"), 
-	Booleano_literal("(true|false)"),
-	//Identificador("\\w+"),
 	Identificador("[a-z]+[1-9]*"),
+	Entero_literal("[1-9]?[0-9]"), 
+	Booleano_literal("(true|false)"),
 	Operadores_aritmeticos("(\\+|-|/|\\*)");
 
 	private final Pattern patron;
