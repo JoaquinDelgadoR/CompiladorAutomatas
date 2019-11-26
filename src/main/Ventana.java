@@ -17,7 +17,6 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
 
 public class Ventana extends JFrame
@@ -45,8 +44,7 @@ public class Ventana extends JFrame
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e)
-		{
-		}
+		{}
 		setTitle("Compilador");
 		setSize(800, 600);
 		setIconImage(cargarIcono("/recursos/icono_codigo.png"));
@@ -101,7 +99,7 @@ public class Ventana extends JFrame
 		jta_consola.setText("");
 		identificadores = new LinkedList<String>();
 
-		lexer.analizar(jta_texto.getText().split("\n"));
+		lexer.analizar(jta_texto.getText().split("\r"));
 
 		while (!lexer.concluido() && !identificadores.contains(lexer.lexema_actual()))
 		{
