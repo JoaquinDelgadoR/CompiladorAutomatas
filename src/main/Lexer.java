@@ -22,10 +22,8 @@ public class Lexer
 		this.codigo = codigo;
 		for (String x : codigo)
 		{
-			entrada.append(x);
+			entrada.append(" " + x);
 		}
-
-		// Por algún motivo necesito eliminar estas cosas que no existen
 		caracteres_vacios.add('\r');
 		caracteres_vacios.add('\n');
 		caracteres_vacios.add('\t');

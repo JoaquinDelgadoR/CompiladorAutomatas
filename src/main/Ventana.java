@@ -107,7 +107,7 @@ public class Ventana extends JFrame
 			Gramatica token = lexer.token_actual();
 			String lexema = lexer.lexema_actual();
 
-			if (token == Gramatica.Identificador)
+			if (token == Gramatica.Identificador && !identificadores.contains(lexema))
 			{
 				identificadores.add(lexema);
 			}
