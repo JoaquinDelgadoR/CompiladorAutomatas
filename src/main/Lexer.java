@@ -28,6 +28,7 @@ public class Lexer
 		// Por algún motivo necesito eliminar estas cosas que no existen
 		caracteres_vacios.add('\r');
 		caracteres_vacios.add('\n');
+		caracteres_vacios.add('\t');
 		caracteres_vacios.add((char) 8);
 		caracteres_vacios.add((char) 9);
 		caracteres_vacios.add((char) 11);
@@ -77,7 +78,7 @@ public class Lexer
 	{
 		int caracteres_a_borrar = 0;
 
-		while (caracteres_vacios.contains(entrada.charAt(caracteres_a_borrar)))
+		while (entrada.length() > caracteres_a_borrar && caracteres_vacios.contains(entrada.charAt(caracteres_a_borrar)))
 		{
 			caracteres_a_borrar++;
 		}
