@@ -1,7 +1,6 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 public class Parser
@@ -32,7 +31,7 @@ public class Parser
 
 	String salida = "";
 	public static String salida2 = "";
-	private int idx = 0, fila = 0;
+	private int idx = 0;
 
 	public Stack<Integer> pila;
 	boolean error;
@@ -45,6 +44,7 @@ public class Parser
 
 	private void Acomodar(Gramatica token, String s)
 	{
+
 		if (getTipo(componente) == token && componente.equals(s))
 		{
 			Avanza();
@@ -69,9 +69,8 @@ public class Parser
 		} catch (IndexOutOfBoundsException e)
 		{
 			idx--;
-
-			//Componente caux = componentes.get(idx);
-			//componente = new Componente(19, "", caux.getColumna(), caux.getFila());
+			// Componente caux = componentes.get(idx);
+			// componente = new Componente(19, "", caux.getColumna(), caux.getFila());
 			// error(tipo,s);
 		}
 	}
@@ -109,7 +108,7 @@ public class Parser
 			if (getTipo(componente) == Gramatica.Entero_literal)
 			{
 				integer_literal();
-			} else if (getTipo(componente) ==Gramatica.Identificador)
+			} else if (getTipo(componente) == Gramatica.Identificador)
 			{
 				identificador();
 			}
@@ -121,7 +120,6 @@ public class Parser
 
 	private void boolean_literal()
 	{
-		String c;
 		Avanza();
 	}
 
@@ -134,7 +132,7 @@ public class Parser
 		}
 		c = componente;
 
-		Acomodar(Gramatica.Simbolos_especiales, "class");
+		Acomodar(Gramatica.Declaracion_clase, "class");
 
 		c = componente;
 
@@ -162,39 +160,11 @@ public class Parser
 		switch (t)
 		{
 			case Simbolos_especiales:
-				switch (to)
-				{
-					case "{":
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to + "\"\t" + componente + "\n";
-						break;
-					case "}":
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to + "\"\t" + componente + "\n";
-						break;
-					case "(":
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to + "\"\t" + componente + "\n";
-						break;
-					case ")":
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to + "\"\t" + componente + "\n";
-						break;
-					case ";":
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to + "\"\t" + componente + "\n";
-						break;
-					case "blanck":
-						salida += "";
-						break;
-					default:
-						salida += "Error Sintactico, Fila: " + componente + " se esperaba un Simbolo especial\t" + componente + "\n";
-						break;
-				}
+				salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to;
 				break;
 			case Operadores_aritmeticos:
-				if (to.equals("arit"))
-				{
-					salida += "Error Sintactico, Fila: " + componente + " se esperaba un operador aritmetico\t" + componente + "\n";
-				} else
-				{
-					break;
-				}
+				salida += "Error Sintactico, Fila: " + componente + " se esperaba un operador aritmetico\t" + componente + "\n";
+				break;
 			case Asignacion:
 				salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"int\" o \"boolean\"\t" + componente + "\n";
 				break;
@@ -210,6 +180,18 @@ public class Parser
 			case Identificador:
 				salida += "Error Sintactico, Fila: " + componente + " se esperaba un identificador\t" + componente + "\n";
 				break;
+			case Declaracion_clase:
+				break;
+			case Especificador:
+				break;
+			case If:
+				break;
+			case Simbolos_de_evaluacion:
+				break;
+			case While:
+				break;
+			default:
+				break;
 		}
 		salida2 += "Token obtenido:" + componente + "\n" + "Token Esperado: " + to + "\n-------------------------------------------\n";
 
@@ -218,7 +200,7 @@ public class Parser
 	private void field_Declaration()
 	{
 		String c = componente;
-		if (getTipo(c) == Gramatica.Modificador || getTipo(c) == Gramatica.Asignacion)
+		if (getTipo(c) == Gramatica.Modificador || getTipo(c) == Gramatica.Especificador)
 		{
 			variable_declaration();
 			c = componente;
@@ -233,8 +215,6 @@ public class Parser
 
 	private void if_Statement()
 	{
-		String c;
-		c = componente;
 		Acomodar(Gramatica.Simbolos_especiales, "(");
 		expression();
 		Acomodar(Gramatica.Simbolos_especiales, ")");
@@ -253,21 +233,18 @@ public class Parser
 
 	private void identificador()
 	{
-		String c, caux, cauxa;
-		String men = "";
+		String c;
 		c = componente;
 
-		men = componente;
 		Acomodar(Gramatica.Identificador, c);
-		men = componente;
 
 	}
 
 	private void modificador()
 	{
-		String c = null, caux = null;
+		String c = null;
 		c = componente;
-		if (getTipo(c) == Gramatica.Identificador)
+		if (getTipo(c) == Gramatica.Modificador)
 		{
 			Avanza();
 		} else
@@ -303,7 +280,7 @@ public class Parser
 
 	private void statement()
 	{
-		String c = null, caux = null;
+		String c = null;
 		c = componente;
 		if (getTipo(c) == Gramatica.If)
 		{
@@ -319,34 +296,29 @@ public class Parser
 		}
 	}
 
-	private void string_literal()
-	{
-		Acomodar(Gramatica.Identificador, componente);
-	}
-
 	private void testing_expression()
 	{
-		String c = null, caux = null;
-		c = componente;
-		if (getTipo(c) == Gramatica.Entero_literal)
+		Gramatica t = getTipo(componente);
+		switch (t)
 		{
-			integer_literal();
-		} else
-		{
-			identificador();
-		}
-		c = componente;
-		if (getTipo(c) == Gramatica.Operadores_aritmeticos)
-		{
-			Avanza();
-		}
-		c = componente;
-		if (getTipo(c) == Gramatica.Entero_literal)
-		{
-			integer_literal();
-		} else
-		{
-			identificador();
+			case Entero_literal:
+				integer_literal();
+				break;
+			case Booleano_literal:
+				boolean_literal();
+				break;
+			case Simbolos_de_evaluacion:
+			case Operadores_aritmeticos:
+				Avanza();
+				break;
+			case Identificador:
+				identificador();
+				break;
+			case Simbolos_especiales:
+				break;
+			default:
+				testing_expression();
+				break;
 		}
 	}
 
@@ -357,10 +329,9 @@ public class Parser
 
 	private void type_specifier()
 	{
-		String c = null, caux = null;
+		String c = null;
 		c = componente;
-		// if(c.getToken().matches("(int|boolean)"))
-		if (getTipo(c) == Gramatica.Identificador)
+		if (getTipo(c) == Gramatica.Especificador)
 		{
 			Avanza();
 		} else
@@ -372,10 +343,9 @@ public class Parser
 	private void variable_declaration()
 	{
 
-		String c = null, caux = null;
-		c = componente;
+		String c = componente;
 
-		if (getTipo(c) != Gramatica.Asignacion)
+		if (getTipo(c) == Gramatica.Modificador)
 		{
 			modificador();
 		}
@@ -384,8 +354,6 @@ public class Parser
 		{
 
 		}
-
-		// fila = componente;
 		identificador();
 
 		c = componente;
@@ -399,7 +367,7 @@ public class Parser
 
 	private void variable_declarator()
 	{
-		String c, cauxa;
+		String c;
 		c = componente;
 
 		if (getTipo(c) == Gramatica.Entero_literal)
@@ -417,8 +385,6 @@ public class Parser
 	private void while_Statement()
 	{
 
-		// Componente c = null, caux = null, cauxa = null;
-		String c = componente;
 		Acomodar(Gramatica.Simbolos_especiales, "(");
 		expression();
 		Acomodar(Gramatica.Simbolos_especiales, ")");
@@ -429,10 +395,14 @@ public class Parser
 
 	private Gramatica getTipo(String s)
 	{
+		int x;
 		for (Gramatica t : Gramatica.values())
 		{
-			if (t.final_coincidencias(s) != -1)
+			x = t.final_coincidencias(s);
+			if (x != -1)
+			{
 				return t;
+			}
 		}
 		return null;
 	}
