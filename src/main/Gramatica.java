@@ -19,7 +19,7 @@ public enum Gramatica
 	Entero_literal("[1-9]?[0-9]"); 
 
 	private final Pattern patron;
-
+	
 	Gramatica(String regex)
 	{
 		patron = Pattern.compile("^" + regex);

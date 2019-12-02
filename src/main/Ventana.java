@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -37,6 +38,7 @@ public class Ventana extends JFrame
 	private DefaultTableModel modelo_tabla;
 	private String encabezado[];
 	private LinkedList<String> identificadores;
+	private ArrayList<String> listaLexemas;
 
 	public Ventana()
 	{
@@ -99,23 +101,26 @@ public class Ventana extends JFrame
 		lexer = new Lexer();
 		jta_consola.setText("");
 		identificadores = new LinkedList<String>();
-
+		listaLexemas = new ArrayList<String>();
 		lexer.analizar(jta_texto.getText().split("\n"));
-
+		
 		while (!lexer.concluido())
 		{
 			Gramatica token = lexer.token_actual();
 			String lexema = lexer.lexema_actual();
-
+			
 			if (token == Gramatica.Identificador && !identificadores.contains(lexema))
 			{
 				identificadores.add(lexema);
 			}
-
+			listaLexemas.add(lexema);
 			jta_consola.append(lexema + "\t" + token + "\n");
 			lexer.continuar();
 		}
-
+		
+		Parser p = new Parser();
+		p.motorSintactico(listaLexemas);
+		System.out.println(p.salida);
 		if (lexer.analisis_exitoso())
 		{
 			jta_consola.append("Análisis finalizado con éxito.");

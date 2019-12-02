@@ -92,7 +92,7 @@ public class Lexer
 		for (Gramatica t : Gramatica.values())
 		{
 			int fin = t.final_coincidencias(entrada.toString());
-
+			
 			if (fin != -1)
 			{
 				token = t;
