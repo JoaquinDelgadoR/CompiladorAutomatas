@@ -63,7 +63,6 @@ public class Parser
 		}
 		try
 		{
-
 			componente = componentes.get(idx);
 
 		} catch (IndexOutOfBoundsException e)
@@ -101,7 +100,6 @@ public class Parser
 			} else
 			{
 				error(Gramatica.Operadores_aritmeticos, "arit");
-				System.out.println("Se esperaba un operador o un operando");
 				break;
 			}
 
@@ -140,12 +138,9 @@ public class Parser
 		c = componente;
 		Acomodar(Gramatica.Simbolos_especiales, "{");
 
-		// -----------------field_Declaration
 		c = componente;
-		// if(c.getTipo() == Componente.MOD || c.getTipo() == Componente.TIPO )
 
 		field_Declaration();
-		// -----------------statement
 		statement();
 		Acomodar(Gramatica.Simbolos_especiales, "}");
 	}
@@ -160,25 +155,25 @@ public class Parser
 		switch (t)
 		{
 			case Simbolos_especiales:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"" + to;
+				salida += "Error Sintactico, se esperaba un \"" + to;
 				break;
 			case Operadores_aritmeticos:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba un operador aritmetico\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaban operadores aritméticos";
 				break;
 			case Asignacion:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"int\" o \"boolean\"\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaba \"=\"";
 				break;
 			case Modificador:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba un \"public\" o \"private\"\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaba modificador";
 				break;
 			case Entero_literal:
-				salida += "Error Sintactico, Fila: " + componente + " se espeba un digito\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaba número entero";
 				break;
 			case Booleano_literal:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba \"true\" o \"false\"\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaba booleano";
 				break;
 			case Identificador:
-				salida += "Error Sintactico, Fila: " + componente + " se esperaba un identificador\t" + componente + "\n";
+				salida += "Error Sintactico, se encontró " + componente + ", se esperaba identificador";
 				break;
 			case Declaracion_clase:
 				break;
@@ -233,18 +228,13 @@ public class Parser
 
 	private void identificador()
 	{
-		String c;
-		c = componente;
-
-		Acomodar(Gramatica.Identificador, c);
+		Acomodar(Gramatica.Identificador, componente);
 
 	}
 
 	private void modificador()
 	{
-		String c = null;
-		c = componente;
-		if (getTipo(c) == Gramatica.Modificador)
+		if (getTipo(componente) == Gramatica.Modificador)
 		{
 			Avanza();
 		} else
@@ -280,17 +270,17 @@ public class Parser
 
 	private void statement()
 	{
-		String c = null;
-		c = componente;
+		String c = componente;
 		if (getTipo(c) == Gramatica.If)
 		{
 			Avanza();
 			if_Statement();
+
 		} else if (getTipo(c) == Gramatica.While)
 		{
 			Avanza();
 			while_Statement();
-		} else if (getTipo(c) == Gramatica.Asignacion)
+		} else if (getTipo(c) == Gramatica.Modificador || getTipo(c) == Gramatica.Especificador)
 		{
 			variable_declaration();
 		}
@@ -299,27 +289,32 @@ public class Parser
 	private void testing_expression()
 	{
 		Gramatica t = getTipo(componente);
-		switch (t)
+		if (t == Gramatica.Identificador)
 		{
-			case Entero_literal:
-				integer_literal();
-				break;
-			case Booleano_literal:
-				boolean_literal();
-				break;
-			case Simbolos_de_evaluacion:
-			case Operadores_aritmeticos:
-				Avanza();
-				break;
-			case Identificador:
-				identificador();
-				break;
-			case Simbolos_especiales:
-				break;
-			default:
-				testing_expression();
-				break;
+			identificador();
+		} else if (t == Gramatica.Entero_literal)
+		{
+			integer_literal();
+		} else
+			error(t, componente);
+
+		t = getTipo(componente);
+
+		if (t == Gramatica.Simbolos_de_evaluacion)
+		{
+			Avanza();
+		} else
+		{
+			error(t, componente);
 		}
+
+		t = getTipo(componente);
+
+		if (t == Gramatica.Entero_literal)
+		{
+			integer_literal();
+		} else
+			error(t, componente);
 	}
 
 	private void type()
@@ -336,7 +331,7 @@ public class Parser
 			Avanza();
 		} else
 		{
-			error(getTipo(c), "");
+			error(getTipo(c), Gramatica.Especificador.toString());
 		}
 	}
 
@@ -350,10 +345,6 @@ public class Parser
 			modificador();
 		}
 		type();
-		if (getTipo(c) == Gramatica.Booleano_literal)
-		{
-
-		}
 		identificador();
 
 		c = componente;

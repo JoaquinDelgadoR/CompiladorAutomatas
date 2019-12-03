@@ -120,7 +120,7 @@ public class Ventana extends JFrame
 		
 		Parser p = new Parser();
 		p.motorSintactico(listaLexemas);
-		System.out.println(p.salida);
+		jta_consola.append(p.salida + "\n");
 		if (lexer.analisis_exitoso())
 		{
 			jta_consola.append("Análisis finalizado con éxito.");
