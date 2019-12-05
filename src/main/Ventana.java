@@ -123,7 +123,7 @@ public class Ventana extends JFrame
 		jta_consola.append(p.salida + "\n");
 		if (lexer.analisis_exitoso())
 		{
-			jta_consola.append("Análisis finalizado con éxito.");
+			jta_consola.append("Análisis léxico finalizado con éxito.");
 		} else
 		{
 			jta_consola.append(lexer.mensaje_error());
