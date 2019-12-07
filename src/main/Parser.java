@@ -32,7 +32,6 @@ public class Parser
 	String salida = "";
 	public static String salida2 = "";
 	private int idx = 0;
-	private int llaves = 0;
 	public Stack<Integer> pila;
 	boolean error;
 
@@ -56,7 +55,6 @@ public class Parser
 
 	private void Avanza()
 	{
-		salida2 += "Token obtenido:" + componente + "\n" + "Token Esperado: " + componente + "\n-------------------------------------------\n";
 		if (idx < componentes.size() - 1)
 		{
 			idx++;
@@ -68,9 +66,6 @@ public class Parser
 		} catch (IndexOutOfBoundsException e)
 		{
 			idx--;
-			// Componente caux = componentes.get(idx);
-			// componente = new Componente(19, "", caux.getColumna(), caux.getFila());
-			// error(tipo,s);
 		}
 	}
 
@@ -271,27 +266,21 @@ public class Parser
 	private void statement()
 	{
 		String c = componente;
-		System.out.println("Componente acutal: " + componente);
-		System.out.println("De tipo: " + getTipo(componente));
 		if (getTipo(c) == Gramatica.If)
 		{
-			System.out.println("Fue considerado IF");
 			Avanza();
 			if_Statement();
 			
 		} else if (getTipo(c) == Gramatica.While)
 		{
-			System.out.println("Fue considerado While");
 			Avanza();
 			while_Statement();
 		} else if (getTipo(c) == Gramatica.Modificador || getTipo(c) == Gramatica.Especificador)
 		{
-			System.out.println("Fue considerado Modificador o especificador");
 			variable_declaration();
 			Acomodar(Gramatica.Simbolos_especiales, ";");
 		}
 		else
-		System.out.println("Tronó");
 			error(getTipo(c), "If while, o declaración de variable");
 	}
 

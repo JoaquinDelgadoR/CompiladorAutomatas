@@ -10,7 +10,9 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -40,6 +42,8 @@ public class Ventana extends JFrame
 	private LinkedList<String> identificadores;
 	private ArrayList<String> listaLexemas;
 
+	private boolean banderaIconos = true;
+
 	public Ventana()
 	{
 		try
@@ -50,7 +54,14 @@ public class Ventana extends JFrame
 		}
 		setTitle("Compilador");
 		setSize(800, 600);
-		setIconImage(cargarIcono("/recursos/icono_codigo.png"));
+		try
+		{
+			setIconImage(cargarIcono("/recursos/icono_codigo.png"));
+		} catch (NullPointerException e)
+		{
+			JOptionPane.showMessageDialog(this, "El programa se ejecutará sin íconos", "Error al cargar íconos", JOptionPane.DEFAULT_OPTION);
+			banderaIconos = false;
+		}
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		this.setLayout(new BorderLayout());
@@ -74,7 +85,6 @@ public class Ventana extends JFrame
 		jta_consola.setEditable(false);
 		scroll_consola = new JScrollPane(jta_consola);
 		jtb_panel_consola.add(scroll_consola, "Consola");
-		jtb_panel_consola.setIconAt(0, new ImageIcon(this.getClass().getResource("/recursos/icono_consola.png")));
 
 		encabezado = new String[] { "Nombre", "Tipo de dato", "Dato que contiene" };
 		modelo_tabla = new DefaultTableModel();
@@ -84,12 +94,19 @@ public class Ventana extends JFrame
 		scroll_identificadores = new JScrollPane(tabla_identificadores);
 
 		jtb_panel_consola.add(scroll_identificadores, "Tabla de identificadores");
-		jtb_panel_consola.setIconAt(1, new ImageIcon(this.getClass().getResource("/recursos/icono_lista.png")));
 
 		barra_tareas = new JToolBar();
 		barra_tareas.setFloatable(false);
-		btn_iniciar = new JButton("Iniciar proceso", new ImageIcon(this.getClass().getResource("/recursos/icono_compilar.png")));
+
+		btn_iniciar = new JButton("Iniciar proceso");
 		btn_iniciar.addActionListener(e -> resultado_analisis());
+
+		if (banderaIconos)
+		{
+			jtb_panel_consola.setIconAt(0, new ImageIcon(this.getClass().getResource("/recursos/icono_consola.png")));
+			jtb_panel_consola.setIconAt(1, new ImageIcon(this.getClass().getResource("/recursos/icono_lista.png")));
+			btn_iniciar.setIcon(new ImageIcon(this.getClass().getResource("/recursos/icono_compilar.png")));
+		}
 
 		barra_tareas.add(btn_iniciar);
 		this.add(barra_tareas, BorderLayout.NORTH);
@@ -103,12 +120,12 @@ public class Ventana extends JFrame
 		identificadores = new LinkedList<String>();
 		listaLexemas = new ArrayList<String>();
 		lexer.analizar(jta_texto.getText().split("\n"));
-		
+
 		while (!lexer.concluido())
 		{
 			Gramatica token = lexer.token_actual();
 			String lexema = lexer.lexema_actual();
-			
+
 			if (token == Gramatica.Identificador && !identificadores.contains(lexema))
 			{
 				identificadores.add(lexema);
@@ -117,17 +134,19 @@ public class Ventana extends JFrame
 			jta_consola.append(lexema + "\t" + token + "\n");
 			lexer.continuar();
 		}
-		
+
 		Parser p = new Parser();
-		p.motorSintactico(listaLexemas);
-		jta_consola.append(p.salida + "\n");
 		if (lexer.analisis_exitoso())
 		{
+			jta_consola.append("\n----::RESULTADO DE ANÁLISIS LÉXICO::----\n");
 			jta_consola.append("Análisis léxico finalizado con éxito.");
 		} else
 		{
 			jta_consola.append(lexer.mensaje_error());
 		}
+		jta_consola.append("\n--::RESULTADO DE ANÁLISIS SINTÁCTICO::--\n");
+		p.motorSintactico(listaLexemas);
+		jta_consola.append(p.salida + "\n");
 		llenarTabla(identificadores);
 	}
 
